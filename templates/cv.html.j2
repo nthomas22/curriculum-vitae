@@ -1,0 +1,70 @@
+<header class="contact">
+    <h1>{{ contact.name }}</h1>
+    <p class="contact-details">
+        <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+        {% for link in contact.links %}
+            <span class="separator">|</span>
+            <a href="{{ link.url }}">{{ link.text }}</a>
+        {% endfor %}
+    </p>
+</header>
+{% for section in sections %}
+    <section class="section {{ section.shape }}">
+        <h2>{{ section.name | replace('_', ' ') | title }}</h2>
+        {% if section.shape == "free_text" %}
+            <p>{{ section.data.text }}</p>
+        {% elif section.shape == "entry_list_dated" %}
+            {% for entry in section.data.entries %}
+                <article class="entry">
+                    <div class="entry-heading">
+                        <h3>{{ entry.title }}</h3>
+                        <span class="dates">
+                            {{ entry.start_date.strftime('%b %Y') }} - {{ entry.end_date.strftime('%b %Y') if entry.end_date else 'Present' }}
+                        </span>
+                    </div>
+                    <p class="organisation">{{ entry.organisation }}</p>
+                    <ul>
+                        {% for highlight in entry.highlights %}
+                            <li>{{ highlight }}</li>
+                        {% endfor %}
+                    </ul>
+                </article>
+            {% endfor %}
+        {% elif section.shape == "categorised" %}
+            {% for category in section.data.categories %}
+                <p class="category">
+                    <span class="category-name">{{ category.name }}:</span>
+                    {{ category.items | join(', ') }}
+                </p>
+            {% endfor %}
+        {% elif section.shape == "tagged_list" %}
+            {% for entry in section.data.entries %}
+                {# An entry with no organisation, no tech and a single detail has no
+                   structure to show, so a heading plus a one-item bullet list is just
+                   wasted space - collapse it onto one line instead. #}
+                {% if entry.details | length == 1 and not entry.organisation and not entry.tech %}
+                    <p class="entry entry-inline">
+                        <span class="entry-name">{{ entry.name }}:</span> {{ entry.details[0] }}
+                    </p>
+                {% else %}
+                    <article class="entry">
+                        <div class="entry-heading">
+                            <h3>{{ entry.name }}</h3>
+                            {% if entry.organisation %}
+                                <span class="organisation">{{ entry.organisation }}</span>
+                            {% endif %}
+                        </div>
+                        <ul>
+                            {% for detail in entry.details %}
+                                <li>{{ detail }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% if entry.tech %}
+                            <p class="tech"><span class="tech-label">Tech:</span> {{ entry.tech | join(', ') }}</p>
+                        {% endif %}
+                    </article>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </section>
+{% endfor %}

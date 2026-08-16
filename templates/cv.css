@@ -1,0 +1,132 @@
+@page {
+    size: A4;
+    margin: 1.4cm 1.5cm;
+}
+
+body {
+    font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.35;
+    color: black;
+    background: white;
+}
+
+/* Links must read as plain text on a printed, black-and-white CV, but stay
+   clickable in the PDF - so the href is kept and only the styling is reset. */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.contact {
+    text-align: center;
+    margin-bottom: 0.9em;
+}
+
+.contact h1 {
+    font-size: 19pt;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.2em;
+}
+
+.contact-details {
+    margin: 0;
+    font-size: 9.5pt;
+}
+
+.separator {
+    padding: 0 0.35em;
+}
+
+.section {
+    margin-bottom: 0.9em;
+}
+
+/* break-after stops a heading being left stranded at the foot of a page
+   with its first entry pushed onto the next one. */
+.section h2 {
+    font-size: 10.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin: 0 0 0.45em;
+    padding-bottom: 0.15em;
+    border-bottom: 0.5pt solid black;
+    break-after: avoid;
+}
+
+.entry {
+    margin-bottom: 0.6em;
+    break-inside: avoid;
+}
+
+.entry:last-child {
+    margin-bottom: 0;
+}
+
+/* Matches the skills lines, so single-line entries look consistent
+   wherever they appear. */
+.entry-inline {
+    margin: 0 0 0.3em;
+}
+
+.entry-name {
+    font-weight: bold;
+}
+
+.entry-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1em;
+}
+
+.entry-heading h3 {
+    font-size: 10pt;
+    margin: 0;
+}
+
+.dates {
+    font-size: 9pt;
+    white-space: nowrap;
+}
+
+.organisation {
+    font-size: 9.5pt;
+    font-style: italic;
+    margin: 0;
+}
+
+.entry ul {
+    margin: 0.2em 0 0;
+    padding-left: 1.1em;
+}
+
+.entry li {
+    margin-bottom: 0.1em;
+}
+
+.free_text p {
+    margin: 0;
+    text-align: justify;
+}
+
+/* A single skills category never splits mid-list across a page break. */
+.category {
+    margin: 0 0 0.3em;
+    break-inside: avoid;
+}
+
+.category-name {
+    font-weight: bold;
+}
+
+.tech {
+    margin: 0.25em 0 0;
+    font-size: 9pt;
+    font-style: italic;
+}
+
+.tech-label {
+    font-style: normal;
+    font-weight: bold;
+}
