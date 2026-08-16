@@ -1,0 +1,6 @@
+# Every file in this repository is owned by Nathan Thomas.
+#
+# The "No pushing directly to main" ruleset requires a code owner review before
+# a pull request can be merged. That rule has no effect unless this file exists
+# and assigns an owner, so this is what makes it real rather than decorative.
+* @nthomas22
