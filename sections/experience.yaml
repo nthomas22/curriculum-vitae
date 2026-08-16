@@ -1,0 +1,26 @@
+entries:
+  - title: Mid-Level Software Developer
+    organisation: Crown Gas & Power
+    start_date: 2023-05-01
+    end_date: null
+    highlights:
+      - Own delivery of key strategic projects end-to-end - see Key Projects below - having progressed from delivering change requests to leading major platform initiatives.
+      - Onboard and support new starters on the Core stack.
+      - Play a key role in the architecture and decision-making for porting the Pricing Engine into Fusion.
+    tags: [core]
+  - title: Junior Software Developer
+    organisation: Crown Gas & Power
+    start_date: 2021-08-01
+    end_date: 2023-05-01
+    highlights:
+      - Responsible for bug triaging and resolution, and delivering change requests.
+      - Progressed onto larger, more complex change requests and began contributing to key projects, including early work on the Portal migration, ahead of promotion to Mid-Level Developer.
+      - Worked directly with Business Analysts and stakeholders to gather requirements, build relationships and shape solutions for change requests, ahead of the team's move to a more structured workflow.
+    tags: [core]
+  - title: Customer Assistant
+    organisation: Tesco PLC
+    start_date: 2017-01-01
+    end_date: 2019-01-01
+    highlights:
+      - Supported the delivery crew, assisted customers with product queries and availability, and received several commendations for work ethic and reliability.
+    tags: [core]

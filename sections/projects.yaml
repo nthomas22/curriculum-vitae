@@ -1,0 +1,33 @@
+entries:
+  - name: Fusion (Ongoing)
+    organisation: Crown Gas & Power
+    details:
+      - Rebuilt the pricing system in Rust, roughly 7x faster than the previous PHP version, cutting pricing time from minutes to seconds.
+      - Contributing to Crown Gas & Power's next-generation application platform across PHP/Laravel, Python/FastAPI and TypeScript/Nuxt, backed by Redis, RabbitMQ and Kong.
+    tech: [PHP/Laravel, Python, FastAPI, Rust, TypeScript, Nuxt, Redis, RabbitMQ, Kong]
+    tags: [core]
+  - name: Automated Pricing Engine
+    organisation: Crown Gas & Power
+    details:
+      - Ported the sales team's entire pricing model - previously a heavy Excel spreadsheet that could lock a PC and take hours to return a single price - into EPS, at the same level of accuracy.
+      - Used asynchronous processing (Laravel Horizon and Supervisor) to cut pricing time from hours to minutes, freeing the sales team to work on other tasks while prices generate.
+      - Covered date mapping, generation of profile percentages, site-level price curves, individual price calculations and breakdowns, and generation of final unit rates and standing charges.
+    tech: [PHP/Laravel, MySQL, Laravel Horizon, Supervisor]
+    tags: [core]
+  - name: Electricity Pricing System (EPS)
+    organisation: Crown Gas & Power
+    details:
+      - Replaced a fully manual, Excel-based sales process with a central source of truth, starting with the nominations module and integrating the external ECOES and ElectraLink APIs.
+      - Extended the system into the wider quotation and contracts process for the sales team.
+    tech: [PHP/Laravel, MySQL]
+    tags: [core]
+  - name: Portal Migration & SSO
+    organisation: Crown Gas & Power
+    details:
+      - Led the migration of the customer Portal (~30,000 users) onto an updated technology stack, modernising both backend and frontend.
+      - Implemented Single Sign-On (SSO) across Gas and Power, reducing login friction for shared customers.
+      - Built the Power Portal from the ground up, giving electricity customers online access to their account data for the first time.
+      - "Automated meter read processing on the Gas Portal so metering staff only handle exceptions ('bad reads'); valid reads import automatically into the third-party Genus meter reading system."
+      - Worked directly with two key business stakeholders to gather requirements and develop the solution, with no Business Analyst involved.
+    tech: [PHP/Laravel, Vue, MySQL]
+    tags: [core]

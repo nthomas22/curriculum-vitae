@@ -1,0 +1,19 @@
+sections:
+  - name: summary
+    shape: free_text
+    file: summary.yaml
+  - name: experience
+    shape: entry_list_dated
+    file: experience.yaml
+  - name: education
+    shape: entry_list_dated
+    file: education.yaml
+  - name: skills
+    shape: categorised
+    file: skills.yaml
+  - name: projects
+    shape: tagged_list
+    file: projects.yaml
+  - name: additional_info
+    shape: tagged_list
+    file: additional_info.yaml

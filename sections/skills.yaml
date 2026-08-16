@@ -1,0 +1,58 @@
+categories:
+  - name: Languages/Frameworks
+    items:
+      - PHP (Laravel 5.5-12)
+      - JavaScript
+      - TypeScript
+      - Vue 2 & 3
+      - Nuxt
+      - Blade
+      - jQuery
+      - Python
+      - FastAPI
+      - Rust
+      - Java
+      - C#
+      - C
+    tags: [core]
+  - name: Front-End & Styling
+    items:
+      - HTML
+      - CSS
+      - SASS
+      - Tailwind CSS
+      - Bootstrap
+    tags: [core]
+  - name: Data & Infrastructure
+    items:
+      - MySQL
+      - Redis
+      - RabbitMQ
+      - Kong
+    tags: [core]
+  - name: Tools & Practices
+    items:
+      - Git
+      - GitHub
+      - GitHub Actions
+      - Jenkins
+      - PHPUnit
+      - Pest
+      - Playwright
+      - Agile (Sprints, Kanban, now working within an agile pods model)
+    tags: [core]
+  - name: AI-First Development
+    items:
+      - Default to Claude for most tasks
+      - Pair-programming
+      - Code review
+      - Planning & documentation
+      - Rapid prototyping / proof-of-concepts
+      - Orchestrating multiple agent instances
+      - Stepping in directly where hands-on control is needed
+    tags: [core]
+  - name: Other
+    items:
+      - SQL
+      - Microsoft Office (Excel, Word, PowerPoint)
+    tags: [core]

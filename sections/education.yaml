@@ -1,0 +1,21 @@
+entries:
+  - title: BSc Computer Science - First Class
+    organisation: University of Lancaster
+    start_date: 2018-09-01
+    end_date: 2021-07-01
+    highlights:
+      - "Year 1 - First (84.9%), Year 2 - First (82%), Year 3 - First (79%). Final year project: designed and built a Unity3D/C# \"Digital Game Based Learning Solution\" for teaching KS1/KS2 children computer science topics."
+    tags: [core]
+  - title: BEng Computer Systems Engineering
+    organisation: University of Sheffield
+    start_date: 2015-09-01
+    end_date: 2018-07-01
+    highlights: []
+    tags: [core]
+  - title: A Levels & GCSEs
+    organisation: Darwen Aldridge Community Academy
+    start_date: 2008-09-01
+    end_date: 2015-07-01
+    highlights:
+      - A Levels (Mathematics, ICT, English Literature & Language, Physics, EPQ) and 12 A*-A GCSEs including Mathematics, English and Science.
+    tags: [core]

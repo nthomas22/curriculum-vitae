@@ -1,0 +1,17 @@
+entries:
+  - name: Driving licence
+    details:
+      - Full UK driving licence.
+    tags: [core]
+  - name: Esports
+    details:
+      - Played for Lancaster's Dota 2 Esports squad in the NSE (National Student Esports) league, placing 2nd nationally.
+    tags: [core]
+  - name: Languages
+    details:
+      - Learning German in spare time.
+    tags: [core]
+  - name: Continuous learning
+    details:
+      - Continuing to build knowledge of new frameworks and tools.
+    tags: [core]
