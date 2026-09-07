@@ -40,6 +40,20 @@ uv run python -m renderer.render --variant default --format all
 
 This writes `output/default.json` and `output/default.pdf`. The PDF is built from `templates/cv.html.j2` and `templates/cv.css` - a single-column, black-and-white layout intended to parse cleanly in Applicant Tracking Systems.
 
+## Testing
+
+```bash
+uv run pytest
+```
+
+The suite is deliberately small. It covers the logic that could produce a *wrong* CV without anything crashing - a silent error you would only notice after sending the file to an employer:
+
+- **Tag filtering** - each shape keeps only the entries carrying a wanted tag, and a section with nothing left is dropped rather than rendered empty.
+- **The `core` tag** - entries tagged `core` are added to every variant automatically, so they can never fall off a CV.
+- **Date ordering** - roles come back newest first, and an ongoing role (one with no end date) is placed by when it started rather than floating to the top.
+- **Parsing** - every `sections/*.yaml` file matches the model its shape names, and no field in the YAML is quietly discarded on the way in. This last check exists because an optional field whose name does not match its model is dropped without any error at all.
+- **A real render** - the renderer is run end-to-end against a copy of the CV data with no `output/` folder, standing in for a fresh clone, and the resulting JSON and PDF are inspected.
+
 ## Structure
 
 ```bash
@@ -66,6 +80,12 @@ curriculum-vitae
 ├── templates
 │   ├── cv.css
 │   └── cv.html.j2
+├── tests
+│   ├── conftest.py
+│   ├── test_filtering.py
+│   ├── test_parsing.py
+│   ├── test_render.py
+│   └── test_sorting.py
 └── variants
     └── default.yaml
 ```
