@@ -34,3 +34,48 @@ jobs:
 
       - name: Run the test suite
         run: uv run pytest
+
+  publish:
+    name: Publish the default variant to GitHub Pages
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # Raised here rather than for the whole workflow, which stays read-only.
+    permissions:
+      pages: write
+      id-token: write
+    # A Pages deployment cannot run alongside another one, so a newer push waits
+    # for the running deployment to finish rather than being cancelled. Set on
+    # this job alone so test runs on other branches never queue behind it.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Install the system libraries WeasyPrint needs
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libpango-1.0-0 libpangoft2-1.0-0
+
+      - uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Render the default variant to JSON
+        run: uv run python -m renderer.render --variant default --format json
+
+      - name: Upload the rendered JSON
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: output
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1
