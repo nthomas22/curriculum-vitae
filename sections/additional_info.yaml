@@ -11,7 +11,3 @@ entries:
     details:
       - Learning German in spare time.
     tags: [core]
-  - name: Continuous learning
-    details:
-      - Continuing to build knowledge of new frameworks and tools.
-    tags: [core]

@@ -12,7 +12,6 @@ categories:
       - FastAPI
       - Rust
       - Java
-      - C#
       - C
     tags: [core]
   - name: Front-End & Styling
@@ -29,6 +28,7 @@ categories:
       - Redis
       - RabbitMQ
       - Kong
+      - AWS (ECS, S3, Secrets Manager)
     tags: [core]
   - name: Tools & Practices
     items:
