@@ -5,8 +5,13 @@ entries:
     end_date: null
     highlights:
       - Own delivery of key strategic projects end-to-end - see Key Projects below - having progressed from delivering change requests to leading major platform initiatives.
-      - Onboard and support new starters on the Core stack.
-      - Play a key role in the architecture and decision-making for porting the Pricing Engine into Fusion.
+      - Founding developer on Fusion - the only developer at the outset, with the project now a collaborative team effort.
+      - Shape Fusion's architecture, including service boundaries, choice of technologies, API design, communication between services, data structures, and benchmarking and performance - designed for clearer separation between services, faster nomination, pricing and quotation turnaround, better configurability and clearer audit trails.
+      - Built core Fusion services - pricing, contracts, quotation, customer and legacy data - as well as the frontend, ahead of Fusion's first production release.
+      - Collaborate with the Fusion team to set engineering standards, including coding conventions, pull request templates, version control, communication standards between services, test suites and documentation.
+      - Act as a key source of knowledge for Product Owners and Product Managers on the current nomination, pricing, quotation and contract lifecycle, and advise on how best to deliver the improvements the business wants in Fusion.
+      - Support DevOps work, including GitHub Actions CI, continuous delivery to AWS and secrets management.
+      - Onboard and support new starters on both the Core stack and Fusion.
     tags: [core]
   - title: Junior Software Developer
     organisation: Crown Gas & Power
@@ -14,7 +19,7 @@ entries:
     end_date: 2023-05-01
     highlights:
       - Responsible for bug triaging and resolution, and delivering change requests.
-      - Progressed onto larger, more complex change requests and began contributing to key projects, including early work on the Portal migration, ahead of promotion to Mid-Level Developer.
+      - Progressed onto larger, more complex change requests and began contributing to key projects, including early work on building the new Power Portal - the electricity equivalent of the existing Gas Portal - alongside modernising the Gas Portal and introducing Single Sign-On (SSO) across both, ahead of promotion to Mid-Level Developer.
       - Worked directly with Business Analysts and stakeholders to gather requirements, build relationships and shape solutions for change requests, ahead of the team's move to a more structured workflow.
     tags: [core]
   - title: Customer Assistant
