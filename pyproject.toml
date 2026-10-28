@@ -20,3 +20,7 @@ dev = [
 
 [project.urls]
 Repository = "https://github.com/nthomas22/curriculum-vitae"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

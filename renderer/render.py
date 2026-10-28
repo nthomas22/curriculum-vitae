@@ -10,9 +10,9 @@ from weasyprint import HTML
 
 from renderer.models import Contact, Categorised, EntryListDated, FreeText, Manifest, TaggedList, Variant
 
-# output/ is gitignored, so it does not exist in a fresh clone - both writers
-# create it on demand rather than assuming it is already there.
-OUTPUT_DIR = Path("./output")
+# Every path is resolved against a root rather than the process working directory
+# so tests can point the renderer at a throwaway copy of the repo.
+DEFAULT_ROOT = Path(".")
 
 SHAPE_MODELS = {
     "categorised": Categorised,
@@ -69,70 +69,90 @@ def parse_args():
     parser.add_argument("--format", choices=["pdf", "json", "all"], default="all")
     return parser.parse_args()
 
-def load_variant(variant):
-    with open('./variants/' + variant + '.yaml', 'rt') as fs: variant_data_raw = yaml.safe_load(fs)
+def load_variant(variant, root=DEFAULT_ROOT):
+    with open(root / "variants" / (variant + ".yaml"), 'rt') as fs: variant_data_raw = yaml.safe_load(fs)
     return Variant(**variant_data_raw)
 
-def load_contact_details():
-    with open('./contact.yaml', 'rt') as fs: contact_data_raw = yaml.safe_load(fs)
+def load_contact_details(root=DEFAULT_ROOT):
+    with open(root / "contact.yaml", 'rt') as fs: contact_data_raw = yaml.safe_load(fs)
     return Contact(**contact_data_raw)
 
-def load_sections():
-    with open('./manifest.yaml', 'rt') as fs: manifest_data_raw = yaml.safe_load(fs)
+def load_sections(root=DEFAULT_ROOT):
+    with open(root / "manifest.yaml", 'rt') as fs: manifest_data_raw = yaml.safe_load(fs)
     sections = dict()
     manifest = Manifest(**manifest_data_raw)
     for section in manifest.sections:
         name = section.name
         file = section.file
-        with open('./sections/' + file, 'rt') as fs: section_data_raw = yaml.safe_load(fs)
+        with open(root / "sections" / file, 'rt') as fs: section_data_raw = yaml.safe_load(fs)
         model_class = SHAPE_MODELS[section.shape]
         section_data = model_class(**section_data_raw)
         sections[name] = section_data
     return sections, manifest
 
-def write_to_file(variant, data):
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    with open(OUTPUT_DIR / (variant + ".json"), "w") as file:
+def resolve_tags(variant):
+    # "core" is what every CV keeps no matter which variant is being rendered,
+    # so it is added on top of whatever the variant itself asked for.
+    return set(variant.include_tags) | {"core"}
+
+def filter_sections(sections, manifest, include_tags):
+    filtered_sections = []
+    for section in manifest.sections:
+        data = sections[section.name]
+        filtered = SHAPE_FILTERS[type(data)](data, include_tags)
+        if filtered is not None:
+            filtered_sections.append({"name": section.name, "shape": section.shape, "data": filtered})
+    return filtered_sections
+
+def prepare_output_dir(root):
+    # output/ is gitignored, so it does not exist in a fresh clone - it is created
+    # on demand rather than assumed to be there.
+    directory = root / "output"
+    directory.mkdir(parents=True, exist_ok=True)
+    return directory
+
+def write_to_file(variant, data, root=DEFAULT_ROOT):
+    directory = prepare_output_dir(root)
+    with open(directory / (variant + ".json"), "w") as file:
         json.dump(data, file, indent=2)
 
-def render_json(variant, contact, filtered_sections):
+def render_json(variant, contact, filtered_sections, root=DEFAULT_ROOT):
     output = dict()
     output["contact"] = contact.model_dump(mode="json")
     for section in filtered_sections:
         output[section["name"]] = section["data"].model_dump(mode="json")
-    write_to_file(variant, output)
+    write_to_file(variant, output, root)
 
-def render_pdf(variant, contact, filtered_sections):
-    env = Environment(loader=FileSystemLoader("templates"))
+def render_pdf(variant, contact, filtered_sections, root=DEFAULT_ROOT):
+    templates = root / "templates"
+    env = Environment(loader=FileSystemLoader(templates))
     template = env.get_template("cv.html.j2")
     html_content = template.render(contact=contact, sections=filtered_sections)
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    HTML(string=html_content, base_url="templates").write_pdf(
-        OUTPUT_DIR / (variant + ".pdf"),
-        stylesheets=["templates/cv.css"],
+    directory = prepare_output_dir(root)
+    HTML(string=html_content, base_url=str(templates)).write_pdf(
+        directory / (variant + ".pdf"),
+        stylesheets=[templates / "cv.css"],
     )
 
-def main():
-    parsedArguments = parse_args()
-    sections, manifest = load_sections()
-    variant = load_variant(parsedArguments.variant)
-    contact = load_contact_details()
-    tagsToInclude = set(variant.include_tags) | {"core"}
+def render(variant_name, output_format, root=DEFAULT_ROOT):
+    sections, manifest = load_sections(root)
+    variant = load_variant(variant_name, root)
+    contact = load_contact_details(root)
+    tagsToInclude = resolve_tags(variant)
 
-    filtered_sections = []
-    for section in manifest.sections:
-        data = sections[section.name]
-        filtered = SHAPE_FILTERS[type(data)](data, tagsToInclude)
-        if filtered is not None:
-            filtered_sections.append({"name": section.name, "shape": section.shape, "data": filtered})
+    filtered_sections = filter_sections(sections, manifest, tagsToInclude)
 
     if len(filtered_sections) <= 0:
         sys.exit("Error: no sections matched the given tags - check your variant file.")
 
-    if parsedArguments.format in ("json", "all"):
-        render_json(parsedArguments.variant, contact, filtered_sections)
-    if parsedArguments.format in ("pdf", "all"):
-        render_pdf(parsedArguments.variant, contact, filtered_sections)
+    if output_format in ("json", "all"):
+        render_json(variant_name, contact, filtered_sections, root)
+    if output_format in ("pdf", "all"):
+        render_pdf(variant_name, contact, filtered_sections, root)
+
+def main():
+    parsedArguments = parse_args()
+    render(parsedArguments.variant, parsedArguments.format)
 
 
 if __name__ == "__main__": main()
