@@ -58,8 +58,9 @@ The suite is deliberately small. It covers the logic that could produce a *wrong
 `.github/workflows/ci.yaml` runs automatically on GitHub using GitHub Actions - GitHub's built-in automation service, which starts a temporary machine and runs the steps in that file.
 
 - **On every pull request, and on every push to `main`** - installs the dependencies and runs the test suite. A broken YAML file or a failing test is caught here rather than the next time you generate a CV. A pull request is tested as if it were already merged into `main`. Pushing to a branch on its own does not run the tests - open a pull request for it, and every later push to that branch is tested.
+- **On a push to `main` only** - once the tests pass, additionally renders the `default` variant to JSON and publishes it to GitHub Pages, giving a stable public URL that the personal website can fetch from.
 
-The workflow is read-only (`contents: read`) - it can check out the code but cannot change anything in the repository.
+The publish step needs GitHub Pages enabled on the repository with its source set to "GitHub Actions" (Settings > Pages). The workflow is read-only (`contents: read`) - it can check out the code but cannot change anything in the repository. The permissions publishing requires (`pages: write` and `id-token: write`) are granted inside that job alone.
 
 ## Structure
 
