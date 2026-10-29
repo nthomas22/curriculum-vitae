@@ -4,7 +4,7 @@
         <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
         {% for link in contact.links %}
             <span class="separator">|</span>
-            <a href="{{ link.url }}">{{ link.text }}</a>
+            {{ link.text }}: <a href="{{ link.url }}">{{ link.url | replace("https://", "") | replace("www.", "") | trim("/") }}</a>
         {% endfor %}
     </p>
 </header>
