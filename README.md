@@ -57,7 +57,7 @@ The suite is deliberately small. It covers the logic that could produce a *wrong
 
 `.github/workflows/ci.yaml` runs automatically on GitHub using GitHub Actions - GitHub's built-in automation service, which starts a temporary machine and runs the steps in that file.
 
-- **On every push, to any branch, and on every pull request** - installs the dependencies and runs the test suite. A broken YAML file or a failing test is caught here rather than the next time you generate a CV. A push to a branch with an open pull request runs it twice, once for each event: the push run tests the branch as it is, and the pull request run tests it as if it were already merged into `main`.
+- **On every pull request, and on every push to `main`** - installs the dependencies and runs the test suite. A broken YAML file or a failing test is caught here rather than the next time you generate a CV. A pull request is tested as if it were already merged into `main`. Pushing to a branch on its own does not run the tests - open a pull request for it, and every later push to that branch is tested.
 
 The workflow is read-only (`contents: read`) - it can check out the code but cannot change anything in the repository.
 

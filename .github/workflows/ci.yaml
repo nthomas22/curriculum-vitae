@@ -1,7 +1,11 @@
 name: CI
 
+# Pull requests are tested as if merged into main, and main itself is tested on
+# every push to it. Feature branches are not tested on push as well, because a
+# branch with an open pull request would otherwise run the same tests twice.
 on:
   push:
+    branches: [main]
   pull_request:
 
 permissions:
