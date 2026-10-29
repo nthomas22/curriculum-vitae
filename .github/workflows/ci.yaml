@@ -1,0 +1,36 @@
+name: CI
+
+# Pull requests are tested as if merged into main, and main itself is tested on
+# every push to it. Feature branches are not tested on push as well, because a
+# branch with an open pull request would otherwise run the same tests twice.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate the CV data and run the tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Install the system libraries WeasyPrint needs
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libpango-1.0-0 libpangoft2-1.0-0
+
+      - uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+
+      # --locked fails the build if uv.lock no longer matches pyproject.toml,
+      # rather than quietly resolving different versions than the ones tested.
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run the test suite
+        run: uv run pytest

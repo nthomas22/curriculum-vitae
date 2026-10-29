@@ -12,8 +12,7 @@ Applying for jobs is a time consuming task. This project aims to alleviate some 
 
 - **Python 3.12+** - the exact version is pinned in `.python-version`.
 - **uv** - manages the virtual environment and dependencies. Install with `curl -LsSf https://astral.sh/uv/install.sh | sh` (see the [uv docs](https://docs.astral.sh/uv/) for other platforms).
-
-No other system-level packages are required - WeasyPrint (used for PDF output) is pure Python from v53 onwards, so `uv sync` installs everything needed.
+- **Pango** - a text layout library that WeasyPrint (used for PDF output) calls into. It is not a Python package, so `uv sync` cannot install it. Most Linux desktop installations already have it; on a bare server or a CI runner, install `libpango-1.0-0` and `libpangoft2-1.0-0`. On macOS, `brew install pango`. JSON output does not touch it, but the module is imported either way, so it must be present to run the renderer at all.
 
 ## Setup
 
@@ -54,12 +53,22 @@ The suite is deliberately small. It covers the logic that could produce a *wrong
 - **Parsing** - every `sections/*.yaml` file matches the model its shape names, and no field in the YAML is quietly discarded on the way in. This last check exists because an optional field whose name does not match its model is dropped without any error at all.
 - **A real render** - the renderer is run end-to-end against a copy of the CV data with no `output/` folder, standing in for a fresh clone, and the resulting JSON and PDF are inspected.
 
+## Continuous Integration
+
+`.github/workflows/ci.yaml` runs automatically on GitHub using GitHub Actions - GitHub's built-in automation service, which starts a temporary machine and runs the steps in that file.
+
+- **On every pull request, and on every push to `main`** - installs the dependencies and runs the test suite. A broken YAML file or a failing test is caught here rather than the next time you generate a CV. A pull request is tested as if it were already merged into `main`. Pushing to a branch on its own does not run the tests - open a pull request for it, and every later push to that branch is tested.
+
+The workflow is read-only (`contents: read`) - it can check out the code but cannot change anything in the repository.
+
 ## Structure
 
 ```bash
 curriculum-vitae
 ├── .github
-│   └── CODEOWNERS
+│   ├── CODEOWNERS
+│   └── workflows
+│       └── ci.yaml
 ├── README.md
 ├── contact.yaml
 ├── manifest.yaml
