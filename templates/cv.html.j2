@@ -23,11 +23,13 @@
                         </span>
                     </div>
                     <p class="organisation">{{ entry.organisation }}</p>
-                    <ul>
-                        {% for highlight in entry.highlights %}
-                            <li>{{ highlight }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% if entry.highlights %}
+                        <ul>
+                            {% for highlight in entry.highlights %}
+                                <li>{{ highlight }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </article>
             {% endfor %}
         {% elif section.shape == "categorised" %}
@@ -54,11 +56,13 @@
                                 <span class="organisation">{{ entry.organisation }}</span>
                             {% endif %}
                         </div>
-                        <ul>
-                            {% for detail in entry.details %}
-                                <li>{{ detail }}</li>
-                            {% endfor %}
-                        </ul>
+                        {% if entry.details %}
+                            <ul>
+                                {% for detail in entry.details %}
+                                    <li>{{ detail }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                         {% if entry.tech %}
                             <p class="tech"><span class="tech-label">Tech:</span> {{ entry.tech | join(', ') }}</p>
                         {% endif %}
