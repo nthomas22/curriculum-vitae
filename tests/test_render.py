@@ -58,3 +58,28 @@ def test_a_variant_matching_nothing_stops_instead_of_writing_an_empty_cv(minimal
 def test_a_missing_variant_file_is_not_silently_ignored(cv_repo):
     with pytest.raises(FileNotFoundError):
         render("does-not-exist", "json", cv_repo)
+
+def test_the_json_feed_holds_tagged_lines_as_plain_text(minimal_repo):
+    (minimal_repo / "manifest.yaml").write_text(
+        "sections:\n"
+        "  - name: experience\n"
+        "    shape: entry_list_dated\n"
+        "    file: experience.yaml\n"
+    )
+    (minimal_repo / "sections" / "experience.yaml").write_text(
+        "entries:\n"
+        "  - title: Developer\n"
+        "    organisation: Crown Gas & Power\n"
+        "    start_date: 2020-01-01\n"
+        "    highlights:\n"
+        "      - Untagged.\n"
+        "      - text: Only for DevOps roles.\n"
+        "        tags: [devops]\n"
+        "      - text: Only for frontend roles.\n"
+        "        tags: [frontend]\n"
+        "    tags: [core]\n"
+    )
+    (minimal_repo / "variants" / "devops.yaml").write_text("include_tags: [devops]\n")
+    render("devops", "json", minimal_repo)
+    data = json.loads((minimal_repo / "output" / "devops.json").read_text())
+    assert data["experience"]["entries"][0]["highlights"] == ["Untagged.", "Only for DevOps roles."]
