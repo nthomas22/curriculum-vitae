@@ -2,6 +2,9 @@ import yaml
 
 import pytest
 
+from pydantic import ValidationError
+
+from renderer.models import DatedEntry, TaggedText
 from renderer.render import SHAPE_MODELS, load_contact_details, load_sections
 
 def missing_keys(raw, parsed, path=""):
@@ -65,3 +68,30 @@ def test_an_unknown_shape_fails_loudly(minimal_repo):
     )
     with pytest.raises(KeyError):
         load_sections(minimal_repo)
+
+def dated_entry_raw(highlights):
+    return {
+        "title": "Developer",
+        "organisation": "Crown Gas & Power",
+        "start_date": "2020-01-01",
+        "highlights": highlights,
+        "tags": ["core"],
+    }
+
+def test_plain_and_tagged_lines_parse_side_by_side():
+    entry = DatedEntry.model_validate(dated_entry_raw([
+        "Untagged.",
+        {"text": "Only for DevOps roles.", "tags": ["devops"]},
+    ]))
+    assert entry.highlights == ["Untagged.", TaggedText(text="Only for DevOps roles.", tags=["devops"])]
+
+def test_a_tagged_line_without_tags_fails_loudly():
+    # Without its tags a line would otherwise have to be guessed at - shown on
+    # every CV or on none - so it is rejected instead.
+    with pytest.raises(ValidationError):
+        DatedEntry.model_validate(dated_entry_raw([{"text": "Only for DevOps roles."}]))
+
+def test_an_unknown_key_on_a_tagged_line_is_reported_as_dropped():
+    raw = dated_entry_raw([{"text": "CI and AWS.", "tags": ["devops"], "tech": ["AWS"]}])
+    parsed = DatedEntry.model_validate(raw).model_dump(mode="json")
+    assert missing_keys(raw, parsed) == ["/highlights[0]/tech"]

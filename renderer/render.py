@@ -29,9 +29,20 @@ def filter_free_text(data, include_tags):
         return data
     return None
 
+def filter_lines(lines, include_tags):
+    # Untagged lines go wherever their parent entry goes; tagged lines must also
+    # match the variant themselves. Either way only the text is kept, so the
+    # template and JSON feed never see the tags.
+    return [
+        line if isinstance(line, str) else line.text
+        for line in lines
+        if isinstance(line, str) or matches(line.tags, include_tags)
+    ]
+
 def filter_entry_list_dated(data, include_tags):
     filtered = [
-        datum for datum in data.entries
+        datum.model_copy(update={"highlights": filter_lines(datum.highlights, include_tags)})
+        for datum in data.entries
         if matches(datum.tags, include_tags)
     ]
     if len(filtered) == 0:
@@ -40,16 +51,20 @@ def filter_entry_list_dated(data, include_tags):
 
 def filter_categorised(data, include_tags):
     filtered = [
-        datum for datum in data.categories
+        datum.model_copy(update={"items": filter_lines(datum.items, include_tags)})
+        for datum in data.categories
         if matches(datum.tags, include_tags)
     ]
+    # A category whose items were all filtered out would render as a bare heading.
+    filtered = [datum for datum in filtered if len(datum.items) > 0]
     if len(filtered) == 0:
         return None
     return Categorised(categories=filtered) 
 
 def filter_tagged_list(data, include_tags):
     filtered = [
-        datum for datum in data.entries
+        datum.model_copy(update={"details": filter_lines(datum.details, include_tags)})
+        for datum in data.entries
         if matches(datum.tags, include_tags)
     ]
     if len(filtered) == 0:

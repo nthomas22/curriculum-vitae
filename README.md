@@ -39,6 +39,19 @@ uv run python -m renderer.render --variant default --format all
 
 This writes `output/default.json` and `output/default.pdf`. The PDF is built from `templates/cv.html.j2` and `templates/cv.css` - a single-column, black-and-white layout intended to parse cleanly in Applicant Tracking Systems.
 
+### Tagging individual lines
+
+Tags normally apply to a whole entry - a job, a project or a skill category. Inside an entry, a bullet point or skill can also carry its own tags, so the repo can hold more facts than fit on one CV and each variant picks the ones it wants:
+
+```yaml
+highlights:
+  - Founding developer on Fusion.          # plain text - shown whenever the job is shown
+  - text: Support DevOps work, including GitHub Actions CI and continuous delivery to AWS.
+    tags: [devops]                         # shown only when the variant asks for devops
+```
+
+A plain line appears whenever its entry does. A tagged line appears only if its entry is included *and* one of its tags is in the variant - `core` on the entry keeps the job, not every bullet inside it. This works for `highlights` (experience, education), `details` (projects, additional info) and skill `items`. A skill category left with no items is dropped; a job or project left with no bullets still shows its heading. Untagged lines end up on every CV, including `default`, which is published publicly - so keep anything extra tagged.
+
 ## Testing
 
 ```bash
@@ -47,7 +60,7 @@ uv run pytest
 
 The suite is deliberately small. It covers the logic that could produce a *wrong* CV without anything crashing - a silent error you would only notice after sending the file to an employer:
 
-- **Tag filtering** - each shape keeps only the entries carrying a wanted tag, and a section with nothing left is dropped rather than rendered empty.
+- **Tag filtering** - each shape keeps only the entries carrying a wanted tag, and a section with nothing left is dropped rather than rendered empty. Inside each entry, tagged bullet points and skills are filtered the same way, and come out as plain text so the template and JSON feed never see tags.
 - **The `core` tag** - entries tagged `core` are added to every variant automatically, so they can never fall off a CV.
 - **Date ordering** - roles come back newest first, and an ongoing role (one with no end date) is placed by when it started rather than floating to the top.
 - **Parsing** - every `sections/*.yaml` file matches the model its shape names, and no field in the YAML is quietly discarded on the way in. This last check exists because an optional field whose name does not match its model is dropped without any error at all.

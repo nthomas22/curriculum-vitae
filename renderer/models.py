@@ -1,9 +1,15 @@
 from datetime import date
 from pydantic import BaseModel
 
+# A line that only appears when its own tags match the variant. Lines written as
+# plain strings have no tags of their own and appear whenever their parent does.
+class TaggedText(BaseModel):
+    text: str
+    tags: list[str]
+
 class Category(BaseModel):
     name: str
-    items: list[str]
+    items: list[str | TaggedText]
     tags: list[str]
 
 class DatedEntry(BaseModel):
@@ -11,7 +17,7 @@ class DatedEntry(BaseModel):
     organisation: str
     start_date: date
     end_date: date | None = None
-    highlights: list[str]
+    highlights: list[str | TaggedText]
     tags: list[str]
 
 class Link(BaseModel):
@@ -26,7 +32,7 @@ class Section(BaseModel):
 class TaggedEntry(BaseModel):
     name: str
     organisation: str | None = None
-    details: list[str]
+    details: list[str | TaggedText]
     tech: list[str] = []
     tags: list[str]
 
