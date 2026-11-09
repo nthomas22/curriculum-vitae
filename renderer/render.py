@@ -8,7 +8,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 
-from renderer.models import Contact, Categorised, EntryListDated, FreeText, Manifest, TaggedList, Variant
+from renderer.models import Contact, Categorised, EntryListDated, FreeText, Manifest, TaggedList, TagVocabulary, Variant
 
 # Every path is resolved against a root rather than the process working directory
 # so tests can point the renderer at a throwaway copy of the repo.
@@ -105,6 +105,32 @@ def load_sections(root=DEFAULT_ROOT):
         sections[name] = section_data
     return sections, manifest
 
+def load_tag_vocabulary(root=DEFAULT_ROOT):
+    with open(root / "tags.yaml", 'rt') as fs: tags_data_raw = yaml.safe_load(fs)
+    return TagVocabulary(tags_data_raw).root
+
+def collect_tags(data, path):
+    # Walks the dumped data rather than each model by hand, so a new shape is
+    # checked without anyone remembering to add it here.
+    found = []
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if key == "tags":
+                found += [(path, tag) for tag in value]
+            else:
+                found += collect_tags(value, path + "." + key)
+    elif isinstance(data, list):
+        for index, value in enumerate(data):
+            found += collect_tags(value, path + "[" + str(index) + "]")
+    return found
+
+def find_unknown_tags(sections, variant_name, variant, vocabulary):
+    used = []
+    for name, data in sections.items():
+        used += collect_tags(data.model_dump(), name)
+    used += [("variants/" + variant_name + ".yaml", tag) for tag in variant.include_tags]
+    return [path + ": " + tag for path, tag in used if tag not in vocabulary]
+
 def resolve_tags(variant):
     # "core" is what every CV keeps no matter which variant is being rendered,
     # so it is added on top of whatever the variant itself asked for.
@@ -153,6 +179,15 @@ def render(variant_name, output_format, root=DEFAULT_ROOT):
     sections, manifest = load_sections(root)
     variant = load_variant(variant_name, root)
     contact = load_contact_details(root)
+    vocabulary = load_tag_vocabulary(root)
+
+    unknown = find_unknown_tags(sections, variant_name, variant, vocabulary)
+    if unknown:
+        sys.exit(
+            "Error: these tags are not listed in tags.yaml - fix the typo or add the tag there:\n  "
+            + "\n  ".join(unknown)
+        )
+
     tagsToInclude = resolve_tags(variant)
 
     filtered_sections = filter_sections(sections, manifest, tagsToInclude)
