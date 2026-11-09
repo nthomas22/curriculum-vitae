@@ -41,6 +41,8 @@ class Categorised(BaseModel):
 
 class Contact(BaseModel):
     name: str
+    headline: str | None = None
+    location: str | None = None
     email: str
     links: list[Link]
 
