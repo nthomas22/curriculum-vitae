@@ -14,6 +14,10 @@ from renderer.models import Contact, Categorised, EntryListDated, FreeText, Mani
 # so tests can point the renderer at a throwaway copy of the repo.
 DEFAULT_ROOT = Path(".")
 
+# Two pages is the length most UK employers expect. Going over only warns rather
+# than fails, so a deliberately longer CV can still be produced.
+MAX_PAGES = 2
+
 SHAPE_MODELS = {
     "categorised": Categorised,
     "entry_list_dated": EntryListDated,
@@ -181,10 +185,22 @@ def render_pdf(variant, contact, filtered_sections, root=DEFAULT_ROOT):
     template = env.get_template("cv.html.j2")
     html_content = template.render(contact=contact, sections=filtered_sections)
     directory = prepare_output_dir(root)
-    HTML(string=html_content, base_url=str(templates)).write_pdf(
-        directory / (variant + ".pdf"),
+    # Laying the pages out once and writing from that layout gives the page count
+    # without rendering the PDF a second time just to measure it.
+    document = HTML(string=html_content, base_url=str(templates)).render(
         stylesheets=[templates / "cv.css"],
     )
+    path = directory / (variant + ".pdf")
+    document.write_pdf(path)
+    warn_if_too_long(path, len(document.pages))
+
+def warn_if_too_long(path, page_count):
+    if page_count > MAX_PAGES:
+        print(
+            "Warning: " + str(path) + " is " + str(page_count) + " pages, over the "
+            + str(MAX_PAGES) + "-page limit - trim it with tags or a shorter summary.",
+            file=sys.stderr,
+        )
 
 def render(variant_name, output_format, root=DEFAULT_ROOT):
     sections, manifest = load_sections(root)
