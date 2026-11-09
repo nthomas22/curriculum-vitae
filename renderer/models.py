@@ -66,3 +66,4 @@ class TagVocabulary(RootModel[dict[str, str]]):
 class Variant(BaseModel):
     include_tags: list[str]
     summary: str | None = Field(default=None, min_length=1)
+    headline: str | None = Field(default=None, min_length=1)
