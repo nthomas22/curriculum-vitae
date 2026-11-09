@@ -63,6 +63,27 @@ devops: Roles with a DevOps or infrastructure focus.
 
 Before anything is written, the renderer checks every tag in `sections/` and in the chosen variant against this list. If any tag is missing from it, the render stops and lists each one with where it was found (for example `experience.entries[0].highlights[2]: devosp`). This catches typos that would otherwise silently leave a line off every CV. The whole data set is checked, not just the parts the chosen variant shows, so a typo turns up the first time anything is rendered. To use a new tag, add it to `tags.yaml` first.
 
+### Tailoring the summary
+
+A variant can replace the shared summary in `sections/summary.yaml` with one written for that role:
+
+```yaml
+include_tags: [core, devops]
+summary: >
+  Software Developer with five years' experience, most recently owning
+  GitHub Actions CI and continuous delivery to AWS...
+```
+
+The variant's summary is shown in place of the shared one, whatever tags the shared one carries. Leave `summary` out to keep the shared summary. An empty summary is rejected. If `manifest.yaml` has no section named `summary`, the render stops, because there is nothing to replace.
+
+### One-off variants
+
+A variant written for a single application, perhaps naming the company, does not need to be in the public repo. Name it `variants/local-<anything>.yaml` (for example `variants/local-acme-backend.yaml`) and Git will ignore it, so it stays on your machine. Render it like any other variant:
+
+```bash
+uv run python -m renderer.render --variant local-acme-backend --format pdf
+```
+
 ## Testing
 
 ```bash
@@ -74,6 +95,7 @@ The suite is deliberately small. It covers the logic that could produce a *wrong
 - **Tag filtering** - each shape keeps only the entries carrying a wanted tag, and a section with nothing left is dropped rather than rendered empty. Inside each entry, tagged bullet points and skills are filtered the same way, and come out as plain text so the template and JSON feed never see tags.
 - **The `core` tag** - entries tagged `core` are added to every variant automatically, so they can never fall off a CV.
 - **The tag list** - a tag that is not in `tags.yaml`, whether on an entry, a single line or a variant, stops the render before any file is written, and every such tag is reported at once.
+- **Tailored summaries** - a variant's own summary replaces the shared one and is always shown, and `local-*.yaml` variants are ignored by Git while ordinary ones are not.
 - **Date ordering** - roles come back newest first, and an ongoing role (one with no end date) is placed by when it started rather than floating to the top.
 - **Parsing** - every `sections/*.yaml` file matches the model its shape names, and no field in the YAML is quietly discarded on the way in. This last check exists because an optional field whose name does not match its model is dropped without any error at all.
 - **A real render** - the renderer is run end-to-end against a copy of the CV data with no `output/` folder, standing in for a fresh clone, and the resulting JSON and PDF are inspected.
@@ -121,6 +143,7 @@ curriculum-vitae
 │   ├── test_parsing.py
 │   ├── test_render.py
 │   ├── test_sorting.py
+│   ├── test_summary_override.py
 │   └── test_tags.py
 └── variants
     └── default.yaml
