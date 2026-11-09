@@ -131,6 +131,17 @@ def find_unknown_tags(sections, variant_name, variant, vocabulary):
     used += [("variants/" + variant_name + ".yaml", tag) for tag in variant.include_tags]
     return [path + ": " + tag for path, tag in used if tag not in vocabulary]
 
+def apply_summary_override(sections, variant_name, variant):
+    if variant.summary is None:
+        return sections
+    if "summary" not in sections:
+        sys.exit(
+            "Error: variants/" + variant_name + ".yaml sets a summary, but manifest.yaml has no section named summary."
+        )
+    # The variant wrote this summary for itself, so it must appear whatever tags
+    # the shared summary carries - tagging it core guarantees that.
+    return {**sections, "summary": FreeText(text=variant.summary, tags=["core"])}
+
 def resolve_tags(variant):
     # "core" is what every CV keeps no matter which variant is being rendered,
     # so it is added on top of whatever the variant itself asked for.
@@ -188,6 +199,7 @@ def render(variant_name, output_format, root=DEFAULT_ROOT):
             + "\n  ".join(unknown)
         )
 
+    sections = apply_summary_override(sections, variant_name, variant)
     tagsToInclude = resolve_tags(variant)
 
     filtered_sections = filter_sections(sections, manifest, tagsToInclude)

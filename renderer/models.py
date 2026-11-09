@@ -1,5 +1,5 @@
 from datetime import date
-from pydantic import BaseModel, RootModel
+from pydantic import BaseModel, Field, RootModel
 
 # A line that only appears when its own tags match the variant. Lines written as
 # plain strings have no tags of their own and appear whenever their parent does.
@@ -63,3 +63,4 @@ class TagVocabulary(RootModel[dict[str, str]]):
 
 class Variant(BaseModel):
     include_tags: list[str]
+    summary: str | None = Field(default=None, min_length=1)
