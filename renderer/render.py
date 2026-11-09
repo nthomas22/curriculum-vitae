@@ -179,11 +179,14 @@ def render_json(variant, contact, filtered_sections, root=DEFAULT_ROOT):
         output[section["name"]] = section["data"].model_dump(mode="json")
     write_to_file(variant, output, root)
 
+def build_html(contact, filtered_sections, root=DEFAULT_ROOT):
+    env = Environment(loader=FileSystemLoader(root / "templates"))
+    template = env.get_template("cv.html.j2")
+    return template.render(contact=contact, sections=filtered_sections)
+
 def render_pdf(variant, contact, filtered_sections, root=DEFAULT_ROOT):
     templates = root / "templates"
-    env = Environment(loader=FileSystemLoader(templates))
-    template = env.get_template("cv.html.j2")
-    html_content = template.render(contact=contact, sections=filtered_sections)
+    html_content = build_html(contact, filtered_sections, root)
     directory = prepare_output_dir(root)
     # Laying the pages out once and writing from that layout gives the page count
     # without rendering the PDF a second time just to measure it.

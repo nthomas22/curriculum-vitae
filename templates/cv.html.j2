@@ -1,5 +1,11 @@
 <header class="contact">
     <h1>{{ contact.name }}</h1>
+    {% if contact.headline %}
+        <p class="headline">{{ contact.headline }}</p>
+    {% endif %}
+    {% if contact.location %}
+        <p class="contact-details">{{ contact.location }}</p>
+    {% endif %}
     <p class="contact-details">
         <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
         {% for link in contact.links %}

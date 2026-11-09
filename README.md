@@ -41,6 +41,10 @@ This writes `output/default.json` and `output/default.pdf`. The PDF is built fro
 
 If the PDF runs past 2 pages, the length most UK employers expect, the renderer still writes it but prints a warning saying how many pages it came to, for example `Warning: output/default.pdf is 3 pages, over the 2-page limit`. Trim it by asking for fewer tags or using a shorter summary. The limit is `MAX_PAGES` in `renderer/render.py`. It is only a warning, not a test, so a deliberately longer CV can still be produced and never fails the CI checks.
 
+### Contact details and header
+
+`contact.yaml` holds the CV header: your name, an optional one-line `headline` under it, an optional `location` line, your email and your links. Leave `headline` or `location` out and that line is simply not shown. These details are also in the public JSON feed, so put nothing here you would not put on LinkedIn - no phone number or home address. A town or city is fine.
+
 ### Tagging individual lines
 
 Tags normally apply to a whole entry - a job, a project or a skill category. Inside an entry, a bullet point or skill can also carry its own tags, so the repo can hold more facts than fit on one CV and each variant picks the ones it wants:
@@ -142,6 +146,7 @@ curriculum-vitae
 │   └── cv.html.j2
 ├── tests
 │   ├── conftest.py
+│   ├── test_contact_header.py
 │   ├── test_filtering.py
 │   ├── test_page_count.py
 │   ├── test_parsing.py
