@@ -1,58 +1,72 @@
 categories:
-  - name: Languages/Frameworks
+  - name: Backend
     items:
       - PHP (Laravel 5.5-12)
-      - JavaScript
-      - TypeScript
-      - Vue 2 & 3
+      - Rust
+      - Python (FastAPI)
+      - API design
+      - external API integrations
+      - text: Java
+        tags: [extended]
+      - text: C
+        tags: [extended]
+    tags: [core]
+  - name: Frontend
+    items:
+      - Vue 2/3
       - Nuxt
+      - TypeScript
+      - JavaScript
       - Blade
       - jQuery
-      - Python
-      - FastAPI
-      - Rust
-      - Java
-      - C
-    tags: [core]
-  - name: Front-End & Styling
-    items:
       - HTML
-      - CSS
-      - SASS
+      - CSS/SASS
       - Tailwind CSS
       - Bootstrap
     tags: [core]
-  - name: Data & Infrastructure
+  - name: Data & Messaging
     items:
       - MySQL
       - Redis
       - RabbitMQ
-      - Kong
-      - AWS (ECS, S3, Secrets Manager)
+      - Laravel Horizon
+      - Supervisor
+      - text: SQL
+        tags: [extended]
     tags: [core]
-  - name: Tools & Practices
+  - name: Cloud & DevOps
     items:
-      - Git
-      - GitHub
+      - AWS (ECS, S3, Secrets Manager)
+      - Docker
+      - Kong
       - GitHub Actions
       - Jenkins
+      - Git
+      - text: GitHub
+        tags: [extended]
+    tags: [core]
+  - name: Testing
+    items:
       - PHPUnit
       - Pest
       - Playwright
-      - Agile (Sprints, Kanban, now working within an agile pods model)
+      - unit, feature and manual testing
+      - CI
     tags: [core]
-  - name: AI-First Development
+  - name: AI Development
     items:
-      - Default to Claude for most tasks
-      - Pair-programming
-      - Code review
-      - Planning & documentation
-      - Rapid prototyping / proof-of-concepts
-      - Orchestrating multiple agent instances
-      - Stepping in directly where hands-on control is needed
+      - Claude (custom skills and agents)
+      - multi-agent orchestration
+      - AI pair-programming and code review
+      - planning and documentation
+      - rapid prototyping
+      - turning AI-generated prototypes into engineered code
+      - text: stepping in directly where hands-on control is needed
+        tags: [extended]
     tags: [core]
-  - name: Other
+  - name: Ways of Working
     items:
-      - SQL
-      - Microsoft Office (Excel, Word, PowerPoint)
+      - Agile (sprints, Kanban, agile pods)
+      - Jira
+      - Microsoft Office
     tags: [core]

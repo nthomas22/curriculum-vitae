@@ -31,6 +31,8 @@ uv run python -m renderer.render --variant <variant-name> --format <pdf|json|all
 - `--variant <variant-name>` - required. The name of a file under `variants/`, without the `.yaml` extension - e.g. `default` for `variants/default.yaml`. A variant is a list of tags to include; entries tagged `core` are always included regardless of variant.
 - `--format` - one of `pdf`, `json`, or `all`. Defaults to `all`.
 
+Two variants are committed: `default`, the standard 2-page CV (also the public JSON feed), and `extended`, which adds the facts tagged `extended` for a fuller CV. `extended` runs past 2 pages, so it prints the page warning described below.
+
 Example - render the default variant to both formats:
 
 ```bash
@@ -155,5 +157,6 @@ curriculum-vitae
 │   ├── test_summary_override.py
 │   └── test_tags.py
 └── variants
-    └── default.yaml
+    ├── default.yaml
+    └── extended.yaml
 ```

@@ -1,29 +1,37 @@
 entries:
-  - name: Fusion (Ongoing)
+  - name: Fusion - next-generation application platform (Ongoing)
     organisation: Crown Gas & Power
     details:
-      - Improved the pricing engine for Fusion as a standalone microservice (PHP/Laravel and Rust), running in parallel with the EPS pricing engine and set to replace it once Fusion is delivered.
-      - Contributing to Crown Gas & Power's next-generation application platform across PHP/Laravel, Python/FastAPI and TypeScript/Nuxt, backed by Redis, RabbitMQ and Kong.
-    tech: [PHP/Laravel, Python, FastAPI, Rust, TypeScript, Nuxt, Redis, RabbitMQ, Kong, AWS]
+      - Advocated for RabbitMQ for messaging between services, which the team adopted.
+      - Built core services, including pricing, quotation, contracts, customer and legacy data, and the Nuxt frontend for the MVP that Sales, Customer Service and Finance will use.
+      - Moved the improved pricing engine into a standalone Laravel and Rust microservice, which runs alongside the existing engine until Fusion replaces it.
+      - Containerised the services with Docker, so every engineer runs the same local setup and Fusion is ready for AWS ECS.
+      - text: Work spans PHP/Laravel, Python/FastAPI and TypeScript/Nuxt, backed by Redis, RabbitMQ and Kong.
+        tags: [extended]
+    tech: [PHP/Laravel, Python, FastAPI, Rust, TypeScript, Nuxt, Redis, RabbitMQ, Kong, Docker, AWS]
     tags: [core]
   - name: Electricity Pricing System (EPS)
     organisation: Crown Gas & Power
     details:
-      - Replaced a fully manual, Excel-based sales process with a central source of truth, starting with the nominations module and integrating the external ECOES and ElectraLink APIs.
-      - Extended the system into the wider quotation and contracts process for the sales team.
-      - Built the EPS pricing engine, porting the sales team's entire pricing model - previously a heavy Excel spreadsheet that could lock a PC and take hours to return a single price - at the same level of accuracy.
-      - Used asynchronous processing (Laravel Horizon and Supervisor) to cut pricing time from hours to minutes, freeing the sales team to work on other tasks while prices generate.
-      - Covered date mapping, generation of profile percentages, site-level price curves, individual price calculations and breakdowns, and generation of final unit rates and standing charges.
-      - Took over and validated the Rust port of the pricing engine for EPS, roughly 7x faster than the PHP version and cutting pricing time from minutes to seconds.
+      - Replaced a manual, Excel-based sales process with a central system, starting with nominations and the ECOES and ElectraLink APIs, then extending it into quotations and contracts.
+      - Released it in February 2025 and supported it through hypercare before moving to Fusion.
+      - Ported the sales team's entire Excel pricing model, which could lock a PC for hours to return one price, into Laravel at the same accuracy. This covered date mapping, profile percentages, site-level price curves, unit rates and standing charges.
+      - Cut pricing time from hours to minutes with queued processing on Laravel Horizon and Supervisor. The sales team now runs hundreds of prices an hour.
+      - Took over the head of engineering's AI-generated Rust port of the engine and turned it into properly engineered, validated code. It runs about 7x faster than PHP, so prices return in seconds.
+      - text: Prices generate in the background, freeing the sales team to work on other tasks while they run.
+        tags: [extended]
+      - text: The engine also produces individual price calculations and breakdowns.
+        tags: [extended]
     tech: [PHP/Laravel, Rust, MySQL, Laravel Horizon, Supervisor]
     tags: [core]
-  - name: Power Portal, Gas Portal Modernisation & SSO
+  - name: Power Portal, Gas Portal and Single Sign-On
     organisation: Crown Gas & Power
     details:
-      - Built the Power Portal from the ground up, giving electricity customers online access to their account data for the first time, with ~30,000 portal users at launch.
-      - Led the modernisation of the Gas Portal onto an updated technology stack, covering both backend and frontend.
-      - Implemented Single Sign-On (SSO) across Gas and Power, reducing login friction for shared customers.
-      - "Automated meter read processing on the Gas Portal so metering staff only handle exceptions ('bad reads'); valid reads import automatically into Genus, a third-party industry linking application."
-      - Worked directly with two key business stakeholders to gather requirements and develop the solution, with no Business Analyst involved.
+      - Built the Power Portal in Laravel and Vue, giving electricity customers online access to their accounts for the first time. It had about 30,000 users at launch.
+      - Led the move of the Gas Portal to an updated stack and added single sign-on across both portals, reducing login friction for shared customers.
+      - Automated hundreds of meter reads a month, so valid reads import straight into Genus and metering staff only handle the bad ones.
+      - Gathered requirements directly with two key business stakeholders, with no Business Analyst involved.
+      - text: Genus is a third-party industry linking application.
+        tags: [extended]
     tech: [PHP/Laravel, Vue, MySQL]
     tags: [core]
