@@ -39,6 +39,8 @@ uv run python -m renderer.render --variant default --format all
 
 This writes `output/default.json` and `output/default.pdf`. The PDF is built from `templates/cv.html.j2` and `templates/cv.css` - a single-column, black-and-white layout intended to parse cleanly in Applicant Tracking Systems.
 
+If the PDF runs past 2 pages, the length most UK employers expect, the renderer still writes it but prints a warning saying how many pages it came to, for example `Warning: output/default.pdf is 3 pages, over the 2-page limit`. Trim it by asking for fewer tags or using a shorter summary. The limit is `MAX_PAGES` in `renderer/render.py`. It is only a warning, not a test, so a deliberately longer CV can still be produced and never fails the CI checks.
+
 ### Tagging individual lines
 
 Tags normally apply to a whole entry - a job, a project or a skill category. Inside an entry, a bullet point or skill can also carry its own tags, so the repo can hold more facts than fit on one CV and each variant picks the ones it wants:
@@ -96,6 +98,7 @@ The suite is deliberately small. It covers the logic that could produce a *wrong
 - **The `core` tag** - entries tagged `core` are added to every variant automatically, so they can never fall off a CV.
 - **The tag list** - a tag that is not in `tags.yaml`, whether on an entry, a single line or a variant, stops the render before any file is written, and every such tag is reported at once.
 - **Tailored summaries** - a variant's own summary replaces the shared one and is always shown, and `local-*.yaml` variants are ignored by Git while ordinary ones are not.
+- **Page count warning** - a PDF over the page limit is still written but triggers a warning naming the file and its page count; one exactly at the limit does not. The real CV's length is deliberately not tested.
 - **Date ordering** - roles come back newest first, and an ongoing role (one with no end date) is placed by when it started rather than floating to the top.
 - **Parsing** - every `sections/*.yaml` file matches the model its shape names, and no field in the YAML is quietly discarded on the way in. This last check exists because an optional field whose name does not match its model is dropped without any error at all.
 - **A real render** - the renderer is run end-to-end against a copy of the CV data with no `output/` folder, standing in for a fresh clone, and the resulting JSON and PDF are inspected.
@@ -140,6 +143,7 @@ curriculum-vitae
 ├── tests
 │   ├── conftest.py
 │   ├── test_filtering.py
+│   ├── test_page_count.py
 │   ├── test_parsing.py
 │   ├── test_render.py
 │   ├── test_sorting.py
