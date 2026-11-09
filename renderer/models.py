@@ -1,5 +1,5 @@
 from datetime import date
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 
 # A line that only appears when its own tags match the variant. Lines written as
 # plain strings have no tags of their own and appear whenever their parent does.
@@ -56,6 +56,10 @@ class Manifest(BaseModel):
 
 class TaggedList(BaseModel):
     entries: list[TaggedEntry]
+
+# tags.yaml is a plain mapping of tag name to its meaning, with no wrapping key.
+class TagVocabulary(RootModel[dict[str, str]]):
+    pass
 
 class Variant(BaseModel):
     include_tags: list[str]

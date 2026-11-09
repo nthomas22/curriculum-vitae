@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-DATA_FILES = ["manifest.yaml", "contact.yaml"]
+DATA_FILES = ["manifest.yaml", "contact.yaml", "tags.yaml"]
 DATA_DIRS = ["sections", "variants", "templates"]
 
 @pytest.fixture
@@ -33,6 +33,13 @@ def minimal_repo(tmp_path, repo_root):
         "  - name: summary\n"
         "    shape: free_text\n"
         "    file: summary.yaml\n"
+    )
+    (tmp_path / "tags.yaml").write_text(
+        "core: Always shown.\n"
+        "niche: Only for niche roles.\n"
+        "backend: Backend roles.\n"
+        "devops: DevOps roles.\n"
+        "frontend: Frontend roles.\n"
     )
     (tmp_path / "sections" / "summary.yaml").write_text(
         'text: "A summary."\n'

@@ -52,6 +52,17 @@ highlights:
 
 A plain line appears whenever its entry does. A tagged line appears only if its entry is included *and* one of its tags is in the variant - `core` on the entry keeps the job, not every bullet inside it. This works for `highlights` (experience, education), `details` (projects, additional info) and skill `items`. A skill category left with no items is dropped; a job or project left with no bullets still shows its heading. Untagged lines end up on every CV, including `default`, which is published publicly - so keep anything extra tagged.
 
+### The tag list
+
+`tags.yaml` lists every tag the CV is allowed to use, each with a one-line meaning:
+
+```yaml
+core: Always shown - added to every variant automatically, so it can never fall off a CV.
+devops: Roles with a DevOps or infrastructure focus.
+```
+
+Before anything is written, the renderer checks every tag in `sections/` and in the chosen variant against this list. If any tag is missing from it, the render stops and lists each one with where it was found (for example `experience.entries[0].highlights[2]: devosp`). This catches typos that would otherwise silently leave a line off every CV. The whole data set is checked, not just the parts the chosen variant shows, so a typo turns up the first time anything is rendered. To use a new tag, add it to `tags.yaml` first.
+
 ## Testing
 
 ```bash
@@ -62,6 +73,7 @@ The suite is deliberately small. It covers the logic that could produce a *wrong
 
 - **Tag filtering** - each shape keeps only the entries carrying a wanted tag, and a section with nothing left is dropped rather than rendered empty. Inside each entry, tagged bullet points and skills are filtered the same way, and come out as plain text so the template and JSON feed never see tags.
 - **The `core` tag** - entries tagged `core` are added to every variant automatically, so they can never fall off a CV.
+- **The tag list** - a tag that is not in `tags.yaml`, whether on an entry, a single line or a variant, stops the render before any file is written, and every such tag is reported at once.
 - **Date ordering** - roles come back newest first, and an ongoing role (one with no end date) is placed by when it started rather than floating to the top.
 - **Parsing** - every `sections/*.yaml` file matches the model its shape names, and no field in the YAML is quietly discarded on the way in. This last check exists because an optional field whose name does not match its model is dropped without any error at all.
 - **A real render** - the renderer is run end-to-end against a copy of the CV data with no `output/` folder, standing in for a fresh clone, and the resulting JSON and PDF are inspected.
@@ -99,6 +111,7 @@ curriculum-vitae
 │   ├── projects.yaml
 │   ├── skills.yaml
 │   └── summary.yaml
+├── tags.yaml
 ├── templates
 │   ├── cv.css
 │   └── cv.html.j2
@@ -107,7 +120,8 @@ curriculum-vitae
 │   ├── test_filtering.py
 │   ├── test_parsing.py
 │   ├── test_render.py
-│   └── test_sorting.py
+│   ├── test_sorting.py
+│   └── test_tags.py
 └── variants
     └── default.yaml
 ```

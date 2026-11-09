@@ -1,0 +1,4 @@
+# Every tag that sections and variants are allowed to use, each with a one-line
+# meaning. Rendering stops if any file uses a tag not listed here, so a typo
+# such as "devosp" fails loudly instead of quietly leaving content off a CV.
+core: Always shown - added to every variant automatically, so it can never fall off a CV.
