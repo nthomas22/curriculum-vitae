@@ -2,3 +2,4 @@
 # meaning. Rendering stops if any file uses a tag not listed here, so a typo
 # such as "devosp" fails loudly instead of quietly leaving content off a CV.
 core: Always shown - added to every variant automatically, so it can never fall off a CV.
+extended: Extra detail kept in the bank for a longer or fuller CV - not on the default 2 pages.

@@ -4,28 +4,38 @@ entries:
     start_date: 2023-05-01
     end_date: null
     highlights:
-      - Own delivery of key strategic projects end-to-end - see Key Projects below - having progressed from delivering change requests to leading major platform initiatives.
-      - Founding developer on Fusion - the only developer at the outset, with the project now a collaborative team effort.
-      - Shape Fusion's architecture, including service boundaries, choice of technologies, API design, communication between services, data structures, and benchmarking and performance - designed for clearer separation between services, faster nomination, pricing and quotation turnaround, better configurability and clearer audit trails.
-      - Built core Fusion services - pricing, contracts, quotation, customer and legacy data - as well as the frontend, ahead of Fusion's first production release.
-      - Collaborate with the Fusion team to set engineering standards, including coding conventions, pull request templates, version control, communication standards between services, test suites and documentation.
-      - Act as a key source of knowledge for Product Owners and Product Managers on the current nomination, pricing, quotation and contract lifecycle, and advise on how best to deliver the improvements the business wants in Fusion.
-      - Support DevOps work, including GitHub Actions CI, continuous delivery to AWS and secrets management.
-      - Onboard and support new starters on both the Core stack and Fusion.
+      - Started Fusion as its only developer; it now has a team of five.
+      - Shape the architecture of Fusion's 8+ services, including service boundaries, API design, communication between services and benchmarking, aiming for faster pricing and quotation turnaround and clearer audit trails.
+      - Act as a key source of knowledge for Product Owners and Product Managers on the nomination, pricing, quotation and contract lifecycle.
+      - Review and merge pull requests as the team's designated approver.
+      - Set up the team's pull request template, and agreed coding conventions and testing standards with the team.
+      - Write unit and feature tests in PHPUnit and Pest that run in CI.
+      - Support CI in GitHub Actions, continuous delivery to AWS and secrets in AWS Secrets Manager.
+      - Mentored a junior developer and onboard new starters on both the Core stack and Fusion.
+      - text: Own delivery of key strategic projects end-to-end, having progressed from delivering change requests to leading major platform initiatives.
+        tags: [extended]
+      - text: Architecture work on Fusion also covers choice of technologies and data structures, designed for clearer separation between services and better configurability.
+        tags: [extended]
+      - text: Agreed wider engineering standards with the Fusion team, covering version control, communication between services and documentation.
+        tags: [extended]
     tags: [core]
   - title: Junior Software Developer
     organisation: Crown Gas & Power
     start_date: 2021-08-01
     end_date: 2023-05-01
     highlights:
-      - Responsible for bug triaging and resolution, and delivering change requests.
-      - Progressed onto larger, more complex change requests and began contributing to key projects, including early work on building the new Power Portal - the electricity equivalent of the existing Gas Portal - alongside modernising the Gas Portal and introducing Single Sign-On (SSO) across both, ahead of promotion to Mid-Level Developer.
-      - Worked directly with Business Analysts and stakeholders to gather requirements, build relationships and shape solutions for change requests, ahead of the team's move to a more structured workflow.
+      - Triaged and fixed bugs, then progressed to larger, more complex change requests.
+      - Gathered requirements for change requests directly with Business Analysts and stakeholders.
+      - text: Built relationships with stakeholders while shaping solutions for change requests, before the team moved to a more structured workflow.
+        tags: [extended]
+      - Began building the Power Portal in February 2023, ahead of promotion.
+      - text: Contributed early work on modernising the Gas Portal and introducing single sign-on across both portals, ahead of promotion to Mid-Level Developer.
+        tags: [extended]
     tags: [core]
   - title: Customer Assistant
     organisation: Tesco PLC
     start_date: 2017-01-01
     end_date: 2019-01-01
     highlights:
-      - Supported the delivery crew, assisted customers with product queries and availability, and received several commendations for work ethic and reliability.
+      - Helped customers with product queries and supported the delivery crew. Received several commendations for reliability.
     tags: [core]
