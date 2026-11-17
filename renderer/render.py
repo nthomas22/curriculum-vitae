@@ -146,6 +146,11 @@ def apply_summary_override(sections, variant_name, variant):
     # the shared summary carries - tagging it core guarantees that.
     return {**sections, "summary": FreeText(text=variant.summary, tags=["core"])}
 
+def apply_headline_override(contact, variant):
+    if variant.headline is None:
+        return contact
+    return contact.model_copy(update={"headline": variant.headline})
+
 def resolve_tags(variant):
     # "core" is what every CV keeps no matter which variant is being rendered,
     # so it is added on top of whatever the variant itself asked for.
@@ -219,6 +224,7 @@ def render(variant_name, output_format, root=DEFAULT_ROOT):
         )
 
     sections = apply_summary_override(sections, variant_name, variant)
+    contact = apply_headline_override(contact, variant)
     tagsToInclude = resolve_tags(variant)
 
     filtered_sections = filter_sections(sections, manifest, tagsToInclude)
